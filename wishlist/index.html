@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wishlist — Claim a product</title>
+  <style>
+    :root{--accent:#5b6de6;--accent2:#7b4bb0}
+    *{box-sizing:border-box}
+    body{font-family:Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,#eef2ff 0,#fef6ff 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:760px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(45,50,80,.08);overflow:hidden}
+    header{padding:28px 32px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
+    header h1{margin:0;font-size:1.5rem}
+    header p{margin:6px 0 0;opacity:.95}
+    main{padding:20px 24px}
+    .controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .controls input[type=text]{flex:1;padding:8px 10px;border:1px solid #e6e9f2;border-radius:8px}
+    .controls button{background:var(--accent);color:#fff;border:none;padding:9px 12px;border-radius:8px;cursor:pointer}
+    ul.products{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    li.product{border:1px solid #f0f2fb;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:10px}
+    .prod-top{display:flex;align-items:center;gap:10px}
+    .prod-thumb{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,#fff,#f5f7ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+    .prod-name{font-weight:600}
+    .prod-footer{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:auto}
+    .prod-checkbox{width:24px;height:24px;cursor:pointer}
+    .prod-name-input{flex:1;padding:6px 8px;border:1px solid #e6e9f2;border-radius:6px;font-size:.9rem}
+    .claim-btn{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .claim-btn[disabled]{opacity:.6;cursor:not-allowed}
+    .claimed-by{font-size:.9rem;color:#444}
+    footer{padding:12px 20px;background:#fafafa;color:#666;font-size:.9rem;text-align:center}
+    .note{font-size:.85rem;color:#666}
+    @media (max-width:420px){.controls{flex-direction:column}.controls button{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <h1>Wishlist</h1>
+      <p>Select a product to claim it — one person per product.</p>
+    </header>
+
+    <main>
+      <ul class="products" id="products"></ul>
+
+      <p class="note">Tip: deploy this folder to GitHub Pages. You must add Supabase config below.</p>
+    </main>
+
+    <footer>
+      <span>Claims are stored in Supabase.</span>
+    </footer>
+  </div>
+
+  <script type="module">
+    // --- IMPORTANT: replace these with your Supabase values ---
+    const SUPABASE_URL = 'https://mzahvaoymcuizkpugvkj.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16YWh2YW95bWN1aXprcHVndmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3ODY3OTYsImV4cCI6MjA4MzM2Mjc5Nn0.d3Ah8XZq0Jhb-cw8gu_dq-8d48s7Qvh82I7vaEzAWZs'
+
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+    const PRODUCTS = [
+      { id: 'p1', name: 'Wireless Headphones' },
+      { id: 'p2', name: 'Smart Watch' },
+      { id: 'p3', name: 'E-book Reader' },
+      { id: 'p4', name: 'Portable Speaker' },
+      { id: 'p5', name: 'Bluetooth Keyboard' }
+    ];
+
+    const productsEl = document.getElementById('products')
+
+    function renderSkeleton(){
+      productsEl.innerHTML = ''
+      for(const p of PRODUCTS){
+        const li = document.createElement('li')
+        li.className = 'product'
+        li.dataset.id = p.id
+        li.innerHTML = `<div class="prod-top"><div class="prod-thumb">${p.name.split(' ').map(s=>s[0]).slice(0,2).join('')}</div><div><div class="prod-name">${p.name}</div></div></div><div class="prod-footer"><input type="checkbox" class="prod-checkbox" /><input type="text" class="prod-name-input" placeholder="Name" /></div>`
+        productsEl.appendChild(li)
+      }
+    }
+
+    async function ensureProductsExist(){
+      for(const p of PRODUCTS){
+        await supabase.from('products').upsert({ id: p.id, product: p.name }).throwOnError()
+      }
+    }
+
+    async function fetchAll(){
+      const { data, error } = await supabase.from('products').select('*')
+      if(error){
+        console.error('fetchAll error', error)
+        return
+      }
+      console.log('Fetched products:', data)
+      data.sort((a,b)=>a.id.localeCompare(b.id))
+      for(const row of data) {
+        console.log('Updating UI for', row.id, 'CHECKED=', row.CHECKED)
+        updateProductUI(row.id, row)
+      }
+    }
+
+    function updateProductUI(id, data){
+      const li = Array.from(productsEl.children).find(x=>x.dataset.id===id)
+      if(!li) {
+        console.warn('No LI found for id:', id)
+        return
+      }
+      const checkbox = li.querySelector('.prod-checkbox')
+      const nameInput = li.querySelector('.prod-name-input')
+      if(!checkbox || !nameInput) {
+        console.warn('No checkbox or input found in li:', id)
+        return
+      }
+      console.log('Setting checkbox for', id, 'to', !!data.checked, 'name=', data.name)
+      checkbox.checked = !!data.checked
+      nameInput.value = data.name || ''
+      nameInput.disabled = !data.checked
+      checkbox.onchange = () => toggleClaim(id, checkbox.checked)
+      nameInput.onchange = () => saveName(id, nameInput.value)
+    }
+
+    async function toggleClaim(id, isClaimed){
+      const nameInput = document.querySelector(`[data-id="${id}"] .prod-name-input`)
+      const updateData = { checked: isClaimed }
+      if(!isClaimed) {
+        updateData.name = null
+        nameInput.value = ''
+      }
+      const { data, error } = await supabase.from('products').update(updateData).eq('id', id).select()
+      if(error) {
+        console.error('toggle error', error)
+        alert('Error saving: ' + error.message)
+      } else {
+        console.log('Updated:', data)
+        nameInput.disabled = !isClaimed
+      }
+    }
+
+    async function saveName(id, nameValue){
+      const { data, error } = await supabase.from('products').update({ name: nameValue }).eq('id', id).select()
+      if(error) {
+        console.error('save name error', error)
+        alert('Error saving name: ' + error.message)
+      } else {
+        console.log('Name saved:', data)
+      }
+    }
+
+    function setupRealtime(){
+      supabase.from('products').on('*', payload => {
+        const row = payload.new || payload.old
+        if(!row) return
+        updateProductUI(row.id, row)
+      }).subscribe((status) => {
+        console.log('Realtime subscription status:', status)
+      })
+    }
+
+    (async ()=>{
+      renderSkeleton()
+      await ensureProductsExist()
+      await fetchAll()
+      setupRealtime()
+    })()
+  </script>
+</body>
+</html>

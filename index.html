@@ -1,369 +1,44 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Contacts</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .contacts-list {
-            padding: 30px 20px;
-        }
-
-        .contact-item {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .contact-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .contact-item h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .contact-item .label {
-            font-weight: 600;
-            color: #667eea;
-            display: inline-block;
-            min-width: 80px;
-        }
-
-        .contact-item p {
-            color: #666;
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact-item a {
-            color: #667eea;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .contact-item a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-
-        .icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-        }
-
-        .footer {
-            background: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            color: #999;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 500px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .contacts-list {
-                padding: 20px 15px;
-            }
-
-            .contact-item {
-                padding: 15px;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simon Vasut — Home</title>
+  <style>
+    :root{--accent:#5b6de6;--accent2:#7b4bb0}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,#eef2ff 0,#fef6ff 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:600px;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(45,50,80,.08);overflow:hidden}
+    header{padding:40px 32px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;text-align:center}
+    header h1{font-size:2rem;margin-bottom:8px}
+    header p{font-size:1rem;opacity:.95}
+    main{padding:40px 32px}
+    .nav-buttons{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .nav-btn{padding:20px;border:none;border-radius:10px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all 0.3s;text-decoration:none;display:flex;align-items:center;justify-content:center;color:#fff}
+    .nav-btn:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.2)}
+    .btn-contacts{background:linear-gradient(135deg,#667eea,#764ba2)}
+    .btn-wishlist{background:linear-gradient(135deg,#f093fb,#f5576c)}
+    footer{padding:16px;background:#fafafa;color:#666;font-size:.9rem;text-align:center}
+    @media (max-width:500px){.nav-buttons{grid-template-columns:1fr}header h1{font-size:1.5rem}main{padding:30px 20px}}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📇 SIMI's Contacts</h1>
-            <p>Get in touch with me</p>
-        </div>
+  <div class="card">
+    <header>
+      <h1>Welcome</h1>
+      <p>Choose what you'd like to view</p>
+    </header>
 
-        <div class="contacts-list">
-            <div class="contact-item">
-                <h3>Email</h3>
-                <p>
-                    <span class="label">Email:</span>
-                    <a href="mailto:simi@simi.com">simi@simi.com</a>
-                </p>
-            </div>
+    <main>
+      <div class="nav-buttons">
+        <a href="webpage/index.html" class="nav-btn btn-contacts">📇 Contacts</a>
+        <a href="wishlist/index.html" class="nav-btn btn-wishlist">🎁 Wishlist</a>
+      </div>
+    </main>
 
-            <div class="contact-item">
-                <h3>Phone</h3>
-                <p>
-                    <span class="label">Mobile:</span>
-                    <a href="tel:676767676">676767676</a>
-                </p>
-            </div>
-
-            <div class="contact-item">
-                <h3>Location</h3>
-                <p>
-                    <span class="label">Address:</span>
-                    Tady 1, Praha 1
-                </p>
-            </div>
-
-            <div class="contact-item">
-                <h3>Social Media</h3>
-                <p>
-                    <span class="label">LinkedIn:</span>
-                    <a href="https://linkedin.com/in/simi" target="_blank">linkedin.com/in/simi</a>
-                </p>
-                <p>
-                    <span class="label">Instagram:</span>
-                    <a href="https://instagram.com/simi" target="_blank">instagram.com/simi</a>
-                </p>
-                <p>
-                    <span class="label">GitHub:</span>
-                    <a href="https://github.com/simonvasut" target="_blank">github.com/simonvasut</a>
-                </p>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>&copy; 2026 My Contacts. All rights reserved.</p>
-        </div>
-    </div>
+    <footer>
+      <p>&copy; 2026 Simon Vasut. All rights reserved.</p>
+    </footer>
+  </div>
 </body>
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Contacts</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            max-width: 600px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .contacts-list {
-            padding: 30px 20px;
-        }
-
-        .contact-item {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .contact-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .contact-item h3 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .contact-item .label {
-            font-weight: 600;
-            color: #667eea;
-            display: inline-block;
-            min-width: 80px;
-        }
-
-        .contact-item p {
-            color: #666;
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact-item a {
-            color: #667eea;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .contact-item a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-
-        .icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-        }
-
-        .footer {
-            background: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            color: #999;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 500px) {
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .contacts-list {
-                padding: 20px 15px;
-            }
-
-            .contact-item {
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📇 SIMI's Contacts</h1>
-            <p>Get in touch with me</p>
-        </div>
-
-        <div class="contacts-list">
-            <div class="contact-item">
-                <h3>Email</h3>
-                <p>
-                    <span class="label">Email:</span>
-                    <a href="mailto:simi@simi.com">simi@simi.com</a>
-                </p>
-            </div>
-
-            <div class="contact-item">
-                <h3>Phone</h3>
-                <p>
-                    <span class="label">Mobile:</span>
-                    <a href="tel:676767676">676767676</a>
-                </p>
-            </div>
-
-            <div class="contact-item">
-                <h3>Location</h3>
-                <p>
-                    <span class="label">Address:</span>
-                    Tady 1, Praha 1
-                </p>
-            </div>
-
-            <div class="contact-item">
-                <h3>Social Media</h3>
-                <p>
-                    <span class="label">LinkedIn:</span>
-                    <a href="https://linkedin.com/in/simi" target="_blank">linkedin.com/in/simi</a>
-                </p>
-                <p>
-                    <span class="label">Instagram:</span>
-                    <a href="https://instagram.com/simi" target="_blank">instagram.com/simi</a>
-                </p>
-                <p>
-                    <span class="label">GitHub:</span>
-                    <a href="https://github.com/simonvasut" target="_blank">github.com/simonvasut</a>
-                </p>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>&copy; 2026 My Contacts. All rights reserved.</p>
-        </div>
-    </div>
-</body>
-</html>
->>>>>>> b81fc115a49e19a073bdb73a0effaf8b53e240e2
